@@ -37,3 +37,6 @@ server/.netbeans
 server/nbproject
 server/.idea
 server/.node_history
+
+server/config/database.json
+server/config/apiconfig.json
