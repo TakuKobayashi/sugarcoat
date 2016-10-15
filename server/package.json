@@ -16,6 +16,7 @@
     "express": "^4.13.4",
     "request": "^2.72.0",
     "sequelize": "*",
-    "db-migrate": "*"
+    "db-migrate": "*",
+    "emoji-strip": "*"
   }
 }

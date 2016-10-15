@@ -6,7 +6,7 @@ exports.up = function(db, callback) {
     id: { type: 'int', primaryKey: true, autoIncrement: true },
     sentenceId: { type: 'int', notNull: true  },
     tag: { type: 'string'},
-    sourceUrl: { type: 'string'},
+    sourceId: { type: 'string'},
     sourceRootUrl: { type: 'string'},
     sourceUserId: { type: 'string'},
     sourceUserName: { type: 'string'},
