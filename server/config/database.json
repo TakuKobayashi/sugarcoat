@@ -1,0 +1,10 @@
+{
+  "prod": {
+    "driver": "mysql",
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "sugarcart",
+    "multipleStatements": true
+  }
+}
