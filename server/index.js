@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
 
 var port = process.env.PORT || 3000;
 
@@ -15,6 +16,40 @@ var io = require('socket.io').listen(server);
 
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({server:server});
+
+var Sequelize = require ('sequelize');
+var text_analize = require('./text_analize.js');
+
+var dbInfo = JSON.parse(fs.readFileSync('./config/database.json', 'utf8'));
+var sequelize = new Sequelize(dbInfo.prod.database, dbInfo.prod.user, dbInfo.prod.password, { host: dbInfo.prod.host, port: 3306, benchmark: true})
+
+var output_sentences = sequelize.define('output_sentences', {
+      sentence: Sequelize.STRING,
+      scoreKind: Sequelize.STRING,
+      score: Sequelize.FLOAT,
+});
+output_sentences.sync();
+
+var output_words = sequelize.define('output_words', {
+      sentenceId: Sequelize.INTEGER,
+      word: Sequelize.STRING,
+      score: Sequelize.FLOAT,
+});
+output_words.sync();
+
+var input_sentences = sequelize.define('input_sentences', {
+      sentence: Sequelize.STRING,
+      scoreKind: Sequelize.STRING,
+      score: Sequelize.FLOAT,
+});
+input_sentences.sync();
+
+var input_words = sequelize.define('input_words', {
+      sentenceId: Sequelize.INTEGER,
+      word: Sequelize.STRING,
+      score: Sequelize.FLOAT,
+});
+input_words.sync();
 
 var connections = [];
 wss.on('connection', function (ws) {
@@ -41,7 +76,25 @@ app.get('/', function(req, res){
 // app.js の app.postをお手本にして実装。herokuから受け取ってロジック呼び出す。
 app.get('/fromHeroku', function (req, res) {
   console.log("/fromHeroku touched!");
-  var message = req.param("ms")
+  var message = req.param("ms");
+  input_sentences.findOne({where: {sentence: message}}).then(function(input){
+    var id = 0;
+    if(input){
+      id = input.id;
+    }
+    output_sentences.findById(id).then(function(output) {
+      console.log(output);
+      var response = message;
+      if(output){
+        response = output.sentence
+      }
+      connections.forEach(function (con, i) {
+        con.send(response);
+      });
+      res.send({"message":response});
+    });
+  });
+
 
   // reqの中にどうやってjsonが入ってるのかまるっきりわからない！bodyの中に入ってるの？
 //  var text = .req.params.ms;
@@ -54,7 +107,6 @@ app.get('/fromHeroku', function (req, res) {
     //
     // You must send back a 200, within 20 seconds, to let us know you've
     // successfully received the callback. Otherwise, the request will time out.
-    res.send({"message":message});
 //    res.sendStatus(200);
 });
 
