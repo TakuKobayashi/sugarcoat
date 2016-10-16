@@ -334,7 +334,7 @@ function sendTextMessageAzure(recipientId, messageText) {
     uri: 'http://taptappun.cloudapp.net:3000/fromHeroku',
     method: 'post',
     json: true,
-    body: messageData
+    form: messageData
   });
 }
 
