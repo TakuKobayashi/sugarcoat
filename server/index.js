@@ -51,6 +51,12 @@ var input_words = sequelize.define('input_words', {
 });
 input_words.sync();
 
+var joint = sequelize.define('joint_input_output', {
+      inputSentenceId: Sequelize.INTEGER,
+      outputSentenceId: Sequelize.INTEGER
+});
+joint.sync();
+
 var connections = [];
 wss.on('connection', function (ws) {
   console.log('connect!!');
@@ -73,6 +79,13 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+var sendMessage = function(res, message){
+  connections.forEach(function (con, i) {
+    con.send(message);
+  });
+  res.send({"message":message});
+}
+
 // app.js の app.postをお手本にして実装。herokuから受け取ってロジック呼び出す。
 app.get('/fromHeroku', function (req, res) {
   console.log("/fromHeroku touched!");
@@ -82,16 +95,18 @@ app.get('/fromHeroku', function (req, res) {
     if(input){
       id = input.id;
     }
-    output_sentences.findById(id).then(function(output) {
-      console.log(output);
-      var response = message;
-      if(output){
-        response = output.sentence
+    joint.findOne({where: {inputSentenceId: id}}).then(function(j){
+      if(!j){
+        sendMessage(res, message);
+        return;
       }
-      connections.forEach(function (con, i) {
-        con.send(response);
+      output_sentences.findById(j.outputSentenceId).then(function(output) {
+        var response = message;
+        if(output){
+          response = output.sentence
+        }
+        sendMessage(res, response);
       });
-      res.send({"message":response});
     });
   });
 
