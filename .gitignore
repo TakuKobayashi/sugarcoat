@@ -40,3 +40,4 @@ server/.node_history
 
 server/config/database.json
 server/config/apiconfig.json
+server/config/default.json
