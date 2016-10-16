@@ -120,26 +120,6 @@ app.post('/webhook', function (req, res) {
 });
 
 /*
-Azureで生成されたメッセージを受け取る。
-よく考えたら不要だった。
-*/
-app.post('/azure', function (req, res) {
-  var data = req.body;
-
-  // メッセージを取り出す
-  // Messangerに送るためのメソッドを呼ぶ
-  // Azureに200番レスポンスを返す
-
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know you've
-    // successfully received the callback. Otherwise, the request will time out.
-    res.sendStatus(200);
-  }
-});
-
-
-/*
  * This path is used for account linking. The account linking call-to-action
  * (sendAccountLinking) is pointed to this URL.
  *
@@ -330,6 +310,7 @@ function receivedMessage(event) {
       default:
         // Azureにメッセージを送る
         messageText = "大変申し上げづらいのですが" + messageText + "でございます。";
+        sendTextMessage(senderID, "Heroku Received!!");
         sendTextMessageAzure(senderID, messageText);
     }
   } else if (messageAttachments) {
