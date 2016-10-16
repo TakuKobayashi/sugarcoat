@@ -4,7 +4,7 @@
     "host": "localhost",
     "user": "root",
     "password": "",
-    "database": "sugarcart",
+    "database": "sugarcoat",
     "multipleStatements": true
   }
 }
