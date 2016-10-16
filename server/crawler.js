@@ -40,11 +40,7 @@ setInterval(function() {
   if(isExecute) return;
   isExecute = true;
   console.log(roopCount);
-  var lastId = -1;
   var options = {q: "オブラート", count: 100};
-  if(lastId > 0){
-  	options.max_id = lastId;
-  }
 
   console.log("start");
   twitterClient.get('search/tweets', options, function(error, tweets, response){
@@ -72,9 +68,6 @@ setInterval(function() {
       meta.sourceUserId = tweets.statuses[i].user.id + '';
       meta.sourceUserName = tweets.statuses[i].user.screen_name;
       bulkSenteceMetas.push(meta);
-      if(tweetCount - 1 == i){
-      	lastId = tweets.statuses[i].id;
-      }
     }
     output_sentences.bulkCreate(bulkSenteces).error(function(err) {
       // この例だとa@c4とabc5がエラーになる
