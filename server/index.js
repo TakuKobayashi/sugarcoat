@@ -90,7 +90,7 @@ var sendMessage = function(res, message){
 app.get('/fromHeroku', function (req, res) {
   console.log("/fromHeroku touched!");
   var message = req.param("ms");
-  input_sentences.findOne({where: {sentence: message}}).then(function(input){
+  input_sentences.findOne({where: {sentence: {$like: "%" + message + "%"}}}).then(function(input){
     var id = 0;
     if(input){
       id = input.id;
