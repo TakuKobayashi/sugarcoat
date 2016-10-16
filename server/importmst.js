@@ -33,10 +33,18 @@ var input_words = sequelize.define('input_words', {
 });
 input_words.sync();
 
+var joint = sequelize.define('joint_input_output', {
+      inputSentenceId: Sequelize.INTEGER,
+      outputSentenceId: Sequelize.INTEGER
+});
+joint.sync();
+
 var bulkSenteces = [];
 var bulkWords = [];
 var bulkSentecesIn = [];
 var bulkWordsIn = [];
+
+var inout = {}
 
 var mstData = fs.readFileSync('./mst/mst.csv', 'utf8');
 var cells = mstData.split("\r\n");
@@ -53,6 +61,8 @@ for(var i = 0;i < cells.length;++i){
   senIn.scoreKind = "";
   senIn.score = 0;
   senIn.sentence = csv[1];
+
+  inout[senIn.sentence] = sen.sentence;
 
   bulkSenteces.push(sen);
   bulkSentecesIn.push(senIn);
@@ -95,4 +105,13 @@ input_sentences.bulkCreate(bulkSentecesIn).error(function(err) {
 });
 input_words.bulkCreate(bulkWordsIn).error(function(err) {
   console.log(JSON.stringify(err));
+});
+
+
+input_sentences.findAll().then(function(inputs){
+  inputs.forEach(function(input){
+    output_sentences.findOne({where: {sentence: inout[input.sentence]}}).then(function(output){
+      joint.create({inputSentenceId: input.id, outputSentenceId: output.id});
+    });
+  });
 });
