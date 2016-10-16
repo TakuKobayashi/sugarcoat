@@ -45,7 +45,7 @@ app.get('/fromHeroku', function (req, res) {
   var messageData = req.json
   var recipientId = messageData.recipient_id;
   var messageId = messageData.message_id;
-  console.log("/fromHeroku is Accessed!! from:" recipientId,);
+  console.log("/fromHeroku is Accessed from %s", recipientId);
 
     // Assume all went well.
     //
