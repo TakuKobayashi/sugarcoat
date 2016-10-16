@@ -330,8 +330,9 @@ function sendTextMessageAzure(recipientId, messageText) {
     }
   };
   //強引
+  uriParam = 'http://taptappun.cloudapp.net:3000/fromHeroku?ms=' + ;
   request({
-    uri: 'http://taptappun.cloudapp.net:3000/fromHeroku?ms=' + messageText,
+    uri: uriParam,
     method: 'get',
   });
 }
