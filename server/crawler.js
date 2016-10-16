@@ -44,6 +44,15 @@ var isFinish = false;
 
 var async = require('async');
 
+var ranges = [
+        '\ud83c[\udf00-\udfff]',
+        '\ud83d[\udc00-\ude4f]',
+        '\ud83d[\ude80-\udeff]',
+        '\ud7c9[\ude00-\udeff]',
+        '[\u2600-\u27BF]'
+];
+var ex = new RegExp(ranges.join('|'), 'g');
+
 setInterval(function() {
   if(isExecute) return;
   isExecute = true;
@@ -63,7 +72,7 @@ setInterval(function() {
       sen.scoreKind = "";
 	  sen.score = 0;
 	  // 絵文字を除去
-	  var sentence = emojiStrip(tweets.statuses[i].text);
+	  var sentence = emojiStrip(tweets.statuses[i].text).replace(ex, '');
 	  sen.sentence = sentence;
 	  
 	  bulkSenteces.push(sen);
