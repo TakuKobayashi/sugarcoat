@@ -329,14 +329,19 @@ function sendTextMessageAzure(recipientId, messageText) {
       metadata: "DEVELOPER_DEFINED_METADATA"
     }
   };
-
-  callSendAPIAzure(messageData);
+  //強引
+  request({
+    uri: 'http://taptappun.cloudapp.net:3000/fromHeroku',
+    method: 'post',
+    json: true,
+    body: messageData
+  });
 }
+
 
 /*
 Azureへ送るAPI
 基本的にはcallSendAPI のコピー
-*/
 function callSendAPIAzure(messageData) {
   request({
     uri: 'http://taptappun.cloudapp.net:3000/fromHeroku',
@@ -361,6 +366,7 @@ function callSendAPIAzure(messageData) {
     }
   });
 }
+*/
 
 /*
 ここにPepperへの送信メソッドを実装
