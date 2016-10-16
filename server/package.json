@@ -19,6 +19,7 @@
     "db-migrate": "*",
     "emoji-strip": "*",
     "async": "*",
+    "sync-request":"*",
     "twitter": "*"
   }
 }

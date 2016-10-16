@@ -6,6 +6,7 @@ var sequelize = new Sequelize(dbInfo.prod.database, dbInfo.prod.user, dbInfo.pro
 var emojiStrip = require('emoji-strip');
 
 var twitter = require('twitter');
+var text_analize = require('./text_analize.js');
 var apiconfigInfo = JSON.parse(fs.readFileSync('./config/apiconfig.json', 'utf8'));
 
 var output_sentences = sequelize.define('output_sentences', {
@@ -14,6 +15,13 @@ var output_sentences = sequelize.define('output_sentences', {
       score: Sequelize.FLOAT,
 });
 output_sentences.sync();
+
+var output_words = sequelize.define('output_words', {
+      sentenceId: Sequelize.INTEGER,
+      word: Sequelize.STRING,
+      score: Sequelize.FLOAT,
+});
+output_words.sync();
 
 var output_sentence_meta = sequelize.define('output_sentence_meta', {
       sentenceId: Sequelize.INTEGER,
@@ -40,17 +48,14 @@ setInterval(function() {
   if(isExecute) return;
   isExecute = true;
   console.log(roopCount);
-  var lastId = -1;
   var options = {q: "オブラート", count: 100};
-  if(lastId > 0){
-  	options.max_id = lastId;
-  }
 
   console.log("start");
   twitterClient.get('search/tweets', options, function(error, tweets, response){
   	console.log(roopCount);
     var tweetCount = tweets.statuses.length || 0;
     var bulkSenteces = [];
+    var bulkWords = [];
     var bulkSenteceMetas = [];
     for(var i = roopCount;i < tweetCount;++i){
       var sen = {};
@@ -58,8 +63,23 @@ setInterval(function() {
       sen.scoreKind = "";
 	  sen.score = 0;
 	  // 絵文字を除去
-	  sen.sentence = emojiStrip(tweets.statuses[i].text);
+	  var sentence = emojiStrip(tweets.statuses[i].text);
+	  sen.sentence = sentence;
+	  
 	  bulkSenteces.push(sen);
+
+	  var keywords = text_analize.getKeyWards(sentence).keywords;
+	  console.log(JSON.stringify(keywords));
+
+      keywords.forEach(function(keyword){
+      	Object.keys(keyword).forEach(function(key){
+          var word = {};
+          word.sentenceId = i;
+          word.word = key;
+          word.score = keyword[key];
+          bulkWords.push(word);
+        });
+      });
 
 	  meta.sentenceId = i;
 	  var texts = [];
@@ -72,9 +92,6 @@ setInterval(function() {
       meta.sourceUserId = tweets.statuses[i].user.id + '';
       meta.sourceUserName = tweets.statuses[i].user.screen_name;
       bulkSenteceMetas.push(meta);
-      if(tweetCount - 1 == i){
-      	lastId = tweets.statuses[i].id;
-      }
     }
     output_sentences.bulkCreate(bulkSenteces).error(function(err) {
       // この例だとa@c4とabc5がエラーになる
@@ -82,6 +99,9 @@ setInterval(function() {
     });
     output_sentence_meta.bulkCreate(bulkSenteceMetas).error(function(err) {
       // この例だとa@c4とabc5がエラーになる
+      console.log(JSON.stringify(err));
+    });
+    output_words.bulkCreate(bulkWords).error(function(err) {
       console.log(JSON.stringify(err));
     });
     roopCount = roopCount + tweetCount;

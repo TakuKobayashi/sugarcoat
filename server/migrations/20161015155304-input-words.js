@@ -6,6 +6,7 @@ exports.up = function(db, callback) {
     id: { type: 'int', primaryKey: true, autoIncrement: true },
     sentenceId: { type: 'int', notNull: true  },
     word: { type: 'string', notNull: true },
+    score: { type: 'float', notNull: true, default: 0},
     updatedAt: 'datetime',
     createdAt: 'datetime'
   }, function(){
