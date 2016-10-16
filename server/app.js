@@ -309,7 +309,7 @@ function receivedMessage(event) {
 
       default:
         // Azureにメッセージを送る
-        messageText = "大変申し上げづらいのですが" + messageText + "でございます。";
+        messageText = "大変申し上げ辛いのですが" + messageText + "でございます。";
         sendTextMessage(senderID, "Heroku Received!!");
         sendTextMessageAzure(senderID, messageText);
     }
@@ -333,8 +333,6 @@ function sendTextMessageAzure(recipientId, messageText) {
   request({
     uri: 'http://taptappun.cloudapp.net:3000/fromHeroku?ms=' + messageText,
     method: 'get',
-    json: true,
-    from: messageData
   });
 }
 
