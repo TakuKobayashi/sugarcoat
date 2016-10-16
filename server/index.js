@@ -38,8 +38,10 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+// app.js の app.postをお手本にして実装。herokuから受け取ってロジック呼び出す。
 app.get('/fromHeroku', function (req, res) {
   var data = req.body;
+  console.log("/fromHeroku is Accessed!!: ",data);
 
     // Assume all went well.
     //
