@@ -40,8 +40,12 @@ app.get('/', function(req, res){
 
 // app.js の app.postをお手本にして実装。herokuから受け取ってロジック呼び出す。
 app.get('/fromHeroku', function (req, res) {
-  var data = req.body;
-  console.log("/fromHeroku is Accessed!!: ",data);
+
+  // reqの中にどうやってjsonが入ってるのかまるっきりわからない！bodyの中に入ってるの？
+  var messageData = req.json
+  var recipientId = messageData.recipient_id;
+  var messageId = messageData.message_id;
+  console.log("/fromHeroku is Accessed!! from:" recipientId,);
 
     // Assume all went well.
     //
