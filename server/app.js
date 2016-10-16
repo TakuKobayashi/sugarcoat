@@ -358,9 +358,9 @@ Azureへ送るAPI
 */
 function callSendAPIAzure(messageData) {
   request({
-    uri: 'http://taptappun.cloudapp.net:3001/fromHeroku',
+    uri: 'http://taptappun.cloudapp.net:3000/fromHeroku',
 //    qs: { access_token: PAGE_ACCESS_TOKEN },
-    method: 'POST',
+    method: 'GET',
     json: messageData
 
   }, function (error, response, body) {
