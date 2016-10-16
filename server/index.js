@@ -43,8 +43,9 @@ app.post('/fromHeroku', function (req, res) {
   console.log("/fromHeroku touched!");
 
   // reqの中にどうやってjsonが入ってるのかまるっきりわからない！bodyの中に入ってるの？
-  var messageData = req.body;
-  console.log("/fromHeroku is Accessed from %s", messageDate);
+  var id = req.id;
+  var text = req.text
+  console.log("/fromHeroku is Accessed from %s", id);
 //  var recipientId = messageData.recipient_id;
 //  var messageId = messageData.message_id;
 //  console.log("/fromHeroku is Accessed from %s", recipientId);
