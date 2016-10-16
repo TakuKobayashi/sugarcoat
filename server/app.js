@@ -121,6 +121,7 @@ app.post('/webhook', function (req, res) {
 
 /*
 Azureで生成されたメッセージを受け取る。
+よく考えたら不要だった。
 */
 app.post('/azure', function (req, res) {
   var data = req.body;
@@ -136,8 +137,6 @@ app.post('/azure', function (req, res) {
     res.sendStatus(200);
   }
 });
-
-
 
 
 /*
@@ -337,6 +336,20 @@ function receivedMessage(event) {
     sendTextMessage(senderID, "Message with attachment received");
   }
 }
+
+/*
+Azureへ送る場所
+
+
+*/
+
+/*
+ここにPepperへの送信メソッドを実装
+後々index.js 側に移植する
+
+*/
+
+
 
 
 /*
