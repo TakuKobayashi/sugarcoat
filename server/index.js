@@ -42,7 +42,7 @@ app.get('/', function(req, res){
 app.get('/fromHeroku', function (req, res) {
 
   // reqの中にどうやってjsonが入ってるのかまるっきりわからない！bodyの中に入ってるの？
-  var messageData = req.json
+  var messageData = req.body
   var recipientId = messageData.recipient_id;
   var messageId = messageData.message_id;
   console.log("/fromHeroku is Accessed from %s", recipientId);
