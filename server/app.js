@@ -328,28 +328,63 @@ function receivedMessage(event) {
         break;
 
       default:
-
+        // Azureにメッセージを送る
         messageText = "大変申し上げづらいのですが" + messageText + "でございます。";
-        sendTextMessage(senderID, messageText);
+        sendTextMessageAzure(senderID, messageText);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
 }
 
+// Azureに送るメソッド
+function sendTextMessageAzure(recipientId, messageText) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText,
+      metadata: "DEVELOPER_DEFINED_METADATA"
+    }
+  };
+
+  callSendAPIAzure(messageData);
+}
+
 /*
-Azureへ送る場所
-
-
+Azureへ送るAPI
+基本的にはcallSendAPI のコピー
 */
+function callSendAPIAzure(messageData) {
+  request({
+    uri: 'http://taptappun.cloudapp.net:3001/fromHeroku',
+//    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: messageData
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+
+      if (messageId) {
+        console.log("Successfully sent message with id %s to recipient %s",
+          messageId, recipientId);
+      } else {
+      console.log("Successfully called Send API for recipient %s",
+        recipientId);
+      }
+    } else {
+      console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+    }
+  });
+}
 
 /*
 ここにPepperへの送信メソッドを実装
 後々index.js 側に移植する
-
 */
-
-
 
 
 /*
