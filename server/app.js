@@ -331,10 +331,8 @@ function sendTextMessageAzure(recipientId, messageText) {
   };
   //強引
   request({
-    uri: 'http://taptappun.cloudapp.net:3000/fromHeroku',
-    method: 'post',
-    id: recipientId,
-    text: messageText,
+    uri: 'http://taptappun.cloudapp.net:3000/fromHeroku?ms=' + messageText,
+    method: 'get',
     json: true,
     from: messageData
   });
