@@ -1,5 +1,5 @@
 {
-  "prod": {
+  "dev": {
     "driver": "mysql",
     "host": "localhost",
     "user": "root",
