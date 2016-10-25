@@ -20,6 +20,7 @@
     "emoji-strip": "*",
     "async": "*",
     "sync-request":"*",
-    "twitter": "*"
+    "twitter": "*",
+    "xmlrpc": "*"
   }
 }
