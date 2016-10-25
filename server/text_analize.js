@@ -1,5 +1,4 @@
 var fs = require('fs');
-var Sequelize = require ('sequelize');
 var apiconfigInfo = JSON.parse(fs.readFileSync('./config/apiconfig.json', 'utf8'));
 
 //requestをrequire

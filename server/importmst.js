@@ -1,9 +1,7 @@
-var fs = require('fs');
-var Sequelize = require ('sequelize');
 var text_analize = require('./text_analize.js');
 
-var dbInfo = JSON.parse(fs.readFileSync('./config/database.json', 'utf8'));
-var sequelize = new Sequelize(dbInfo.prod.database, dbInfo.prod.user, dbInfo.prod.password, { host: dbInfo.prod.host, port: 3306, benchmark: true})
+var application = require('./application.js');
+var sequelize = application.sequelize();
 
 var output_sentences = sequelize.define('output_sentences', {
       sentence: Sequelize.STRING,
