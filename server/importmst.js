@@ -65,9 +65,9 @@ for(var i = 0;i < cells.length;++i){
   bulkSenteces.push(sen);
   bulkSentecesIn.push(senIn);
 
-  var keywords = text_analize.getKeyWards(sen.sentence).keywords;
+  var keywords = text_analize.getGooKeyWards(sen.sentence).keywords;
   console.log(JSON.stringify(keywords));
-  var keywordsIn = text_analize.getKeyWards(senIn.sentence).keywords;
+  var keywordsIn = text_analize.getGooKeyWards(senIn.sentence).keywords;
   console.log(JSON.stringify(keywordsIn));
 
   keywords.forEach(function(keyword){

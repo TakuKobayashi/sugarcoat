@@ -75,7 +75,7 @@ setInterval(function() {
 	  
 	  bulkSenteces.push(sen);
 
-	  var keywords = text_analize.getKeyWards(sentence).keywords;
+	  var keywords = text_analize.getGooKeyWards(sentence).keywords;
 	  console.log(JSON.stringify(keywords));
 
       keywords.forEach(function(keyword){

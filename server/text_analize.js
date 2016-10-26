@@ -13,7 +13,7 @@ var request = require('sync-request');
 
 var url = "https://labs.goo.ne.jp/api/keyword";
 
-exports.getKeyWards = function(text) {
+exports.getGooKeyWards = function(text) {
   var bodyObj = {"app_id":apiconfigInfo.goo.app_id,"title":text, "body":text}
   //オプションを定義
   var options = {
