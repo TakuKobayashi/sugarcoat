@@ -1,3 +1,5 @@
+var Sequelize = require ('sequelize');
+var fs = require('fs');
 var text_analize = require('./text_analize.js');
 
 var application = require('./application.js');
@@ -65,11 +67,12 @@ for(var i = 0;i < cells.length;++i){
   bulkSenteces.push(sen);
   bulkSentecesIn.push(senIn);
 
-  var keywords = text_analize.getGooKeyWards(sen.sentence).keywords;
+  var keywords = text_analize.getYahooKeyWards(sen.sentence);
   console.log(JSON.stringify(keywords));
-  var keywordsIn = text_analize.getGooKeyWards(senIn.sentence).keywords;
+  var keywordsIn = text_analize.getYahooKeyWards(senIn.sentence);
   console.log(JSON.stringify(keywordsIn));
 
+/*
   keywords.forEach(function(keyword){
     Object.keys(keyword).forEach(function(key){
       var word = {};
@@ -87,6 +90,23 @@ for(var i = 0;i < cells.length;++i){
       word.score = keyword[key];
       bulkWordsIn.push(word);
     });
+  });
+};
+*/
+
+  Object.keys(keywords).forEach(function(key){
+    var word = {};
+    word.sentenceId = i;
+    word.word = key;
+    word.score = keywords[key];
+    bulkWords.push(word);
+  });
+  Object.keys(keywordsIn).forEach(function(key){
+    var word = {};
+    word.sentenceId = i;
+    word.word = key;
+    word.score = keywordsIn[key];
+    bulkWordsIn.push(word);
   });
 };
 

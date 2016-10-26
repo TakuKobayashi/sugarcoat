@@ -1,3 +1,5 @@
+var Sequelize = require ('sequelize');
+var fs = require('fs');
 var application = require('./application.js');
 var sequelize = application.sequelize();
 
@@ -75,7 +77,7 @@ setInterval(function() {
 	  
 	  bulkSenteces.push(sen);
 
-	  var keywords = text_analize.getGooKeyWards(sentence).keywords;
+	  var keywords = text_analize.getYahooKeyWards(sentence).keywords;
 	  console.log(JSON.stringify(keywords));
 
       keywords.forEach(function(keyword){
