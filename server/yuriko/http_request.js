@@ -1,4 +1,5 @@
 'use strict';
+var apiconfigInfo = JSON.parse(fs.readFileSync('../config/apiconfig.json', 'utf8'));
 
 //requestをrequire
 var request = require('request');
@@ -17,8 +18,8 @@ var qs = require('querystring');
 var message     = "今日は大変疲れましたが楽しかったね";
 
 //watsonのtone-analyzerのAPI
-var username = '7743d7b8-b987-42a9-b2bc-3abd6aec7884';
-var password = 'OPCwL3dOfQoi';
+var username = apiconfigInfo.watson.username;
+var password = apiconfigInfo.watson.password;
 var result   = '';
 var en_result= '';
 //
@@ -45,8 +46,8 @@ function getAccessToken(callback) {
     });
     //作成したmaicrosoftの翻訳APIキー
     var data = {
-        'client_id': 'sugarcoat',
-        'client_secret': 'sugarcoatsugarcoatsugarcoat',
+        'client_id': apiconfigInfo.microsoft.client_id,
+        'client_secret': apiconfigInfo.microsoft.client_secret,
         'scope': 'http://api.microsofttranslator.com',
         'grant_type': 'client_credentials'
     };

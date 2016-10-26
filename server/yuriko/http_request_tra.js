@@ -18,8 +18,8 @@ var message     = "めちゃくちゃ楽しいよ。ありがとう";
 var res_message = message.replace( /。/g , "" ) ;
 
 //watsonのtone-analyzerのAPI
-var username = '7743d7b8-b987-42a9-b2bc-3abd6aec7884';
-var password = 'OPCwL3dOfQoi';
+var username = apiconfigInfo.watson.username;
+var password = apiconfigInfo.watson.password;
 
 //
 //Micarosoftの翻訳API処理
@@ -45,8 +45,8 @@ function getAccessToken(callback) {
     });
     //作成したmaicrosoftの翻訳APIキー
     var data = {
-        'client_id': 'sugarcoat',
-        'client_secret': 'sugarcoatsugarcoatsugarcoat',
+        'client_id': apiconfigInfo.microsoft.client_id,
+        'client_secret': apiconfigInfo.microsoft.client_secret,
         'scope': 'http://api.microsofttranslator.com',
         'grant_type': 'client_credentials'
     };

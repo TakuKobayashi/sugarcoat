@@ -1,5 +1,7 @@
 'use strict';
 
+var apiconfigInfo = JSON.parse(fs.readFileSync('../config/apiconfig.json', 'utf8'));
+
 var http = require('http');
 var https = require('https');
 var qs = require('querystring');
@@ -28,8 +30,8 @@ function getAccessToken(callback) {
         console.log(err);
     });
     var data = {
-        'client_id': 'sugarcoat',
-        'client_secret': 'sugarcoatsugarcoatsugarcoat',
+        'client_id': apiconfigInfo.microsoft.client_id,
+        'client_secret': apiconfigInfo.microsoft.client_secret,
         'scope': 'http://api.microsofttranslator.com',
         'grant_type': 'client_credentials'
     };
